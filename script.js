@@ -1,85 +1,113 @@
+let palabras = [];
 
 // Se crea función para inicializar el programa (será llamada por evento onclick)
-function start() {
+function iniciar() {
     console.log("Bienvenido a la Aplicación");
-
     // Se solicita confirmación por prompt para iniciar programa y se almacena opción en variable inicio, convirtiéndola a número
     let inicio = 0;
     while (inicio == 0) {
         inicio = parseInt(prompt("Por favor elija:\n1.Iniciar Calculadora\n2.Iniciar Analizador de Palabras\n3.Salir"));
         // Nos aseguramos que se ingrese una de las opciones válidas, de lo contrario se sale del programa
-        if (inicio == 1 || inicio == 2 || inicio == 3) {
+        if (inicio == 1 || inicio == 2) {
             console.log("Ingresando a la Aplicación...");
-        } else {
+            programas(inicio);
+        } else if (inicio == 3) {
+            // Si la variable inicio es 3 se sale del programa, damos a inicio el valor false para salir del bucle.
+            console.log(inicio);
+            inicio = false;
+            console.log("Saliendo del programa");
+            break;
+        }
+        else {
             console.log("Por favor ingrese una alternativa válida");
             inicio = 0;
         }
     }
-    
+}
 
-    let palabras = [];
-    // Se inicia bucle que vuelve a ejecutar programa si la variable inicio existe
-    while (inicio) {
-        switch (inicio) {
-            case 1:
-                // Primera opción: Calculadora. Solicitamos opciones por prompt
-                let opcion = parseInt(prompt("Elija una opción:\n1.Sumar\n2.Restar\n3.Multiplicar\n4.Dividir"));
-                let num1;
-                let num2;
-                if (opcion == 1) {
-                    // Suma
-                    num1 = parseInt(prompt("Ingrese el primer número"));
-                    num2 = parseInt(prompt("Ingrese el segundo número"));
-                    let resul = num1+num2;
-                    alert(num1 + " + " + num2 + " = " + resul);
-                } else if (opcion == 2) {
-                    // Resta
-                    num1 = parseInt(prompt("Ingrese el primer número"));
-                    num2 = parseInt(prompt("Ingrese el segundo número"));
-                    let resul = num1-num2;
-                    alert(num1 + " - " + num2 + " = " + resul);
-                } else if (opcion == 3) {
-                    // Multiplicación
-                    num1 = parseInt(prompt("Ingrese el primer número"));
-                    num2 = parseInt(prompt("Ingrese el segundo número"));
-                    let resul = num1*num2;
-                    alert(num1 + " x " + num2 + " = " + resul);
-                } else if (opcion == 4) {
-                    // División
-                    num1 = parseInt(prompt("Ingrese el primer número"));
-                    num2 = parseInt(prompt("Ingrese el segundo número"));
-                    let resul = num1/num2;
-                    alert(num1 + " : " + num2 + " = " + resul);
-                } else {
-                    alert("Por favor seleccione una opción válida");
-                }
-                // Volvemos a preguntar por qué sección de la aplicación usar
-                inicio = parseInt(prompt("Seguir? Seleccione:\n1.Calculadora\n2.Analizador de Palabras\n3.Salir"));
-                break;
-            case 2:
-                // Programa de palabras
-                alert("Programa de Análisis de Palabras");
-                console.log("Programa de palabras");
-                let palabra;
-                palabra = prompt("Ingrese una palabra").toLocaleString('es');
-                // Verificamos que no se ingresen números o campos vacíos
-                while (!isNaN(parseInt(palabra)) || palabra == "") {
-                    console.log(parseInt(palabra));
-                    palabra = prompt("Por favor, ingrese sólo palabras:");
-                }
-                palabras.push(palabra);
-                console.log(palabras);
-                let cant = palabra.length;
-                alert("Usted ingresó la palabra: "+palabra+"\nSu palabra tiene "+cant+" letras");
-                // Volvemos a preguntar por qué sección de la aplicación usar
-                inicio = parseInt(prompt("Seguir? Seleccione:\n1.Calculadora\n2.Analizador de Palabras\n3.Salir"));
-                break;
-            case 3:
-                // Si la variable inicio es 3 se sale del programa, damos a inicio el valor false para salir del switch y del bucle.
-                console.log(inicio);
-                inicio = false;
-                break;
-        }
+function programas(inicio) {
+    switch (inicio) {
+        case 1:
+            // Primera opción: Calculadora. Solicitamos operación deseada
+            let opcion = parseInt(prompt("Elija una opción:\n1.Sumar\n2.Restar\n3.Multiplicar\n4.Dividir"));
+            
+            // Encapsulamos solicitud de números por prompt en función que devuelve arreglo
+            function numeros() {
+                let num1 = parseInt(prompt("Ingrese el primer número"));
+                let num2 = parseInt(prompt("Ingrese el segundo número"));
+                return [num1,num2];
+            }
+            if (opcion == 1) {
+                let numer = numeros();
+                // Llamamos a función sumar y valor devuelto es desplegado en alert 
+                alert(sumar(numer[0],numer[1]));
+            } else if (opcion == 2) {
+                let numer = numeros();
+                // Llamamos a función restar y valor devuelto es desplegado en alert
+                alert(restar(numer[0],numer[1]));
+            } else if (opcion == 3) {
+                let numer = numeros();
+                // Llamamos a función multiplicar y valor devuelto es desplegado en alert
+                alert(multi(numer[0],numer[1]));
+            } else if (opcion == 4) {
+                let numer = numeros();
+                // Llamamos a función dividir y valor devuelto es desplegado en alert
+                alert(divi(numer[0],numer[1]));
+            } else {
+                alert("Por favor seleccione una opción válida");
+            }
+            // Volvemos a preguntar por qué sección de la aplicación usar
+            break;
+        case 2:
+            // Programa de palabras
+            alert("Programa de Análisis de Palabras");
+            console.log("Programa de palabras");
+
+            // Llamamos a función para ingresar palabra
+            ingresarPalabra();
+            break;
     }
-    console.log("Saliendo del programa");
+    // Nos deshacemos del ciclo while innecesario llamando nuevamente a la función iniciar
+    iniciar();
+}
+
+// Funciones de Calculadora
+
+function sumar(num1,num2) {
+    let resul = num1 + num2;
+    const msj = num1 + " + " + num2 + " = " + resul;
+    return msj;
+}
+
+function restar(num1,num2) {
+    let resul = num1 - num2;
+    const msj = num1 + " - " + num2 + " = " + resul;
+    return msj;
+}
+
+function multi(num1,num2) {
+    let resul = num1 * num2;
+    const msj = num1 + " x " + num2 + " = " + resul;
+    return msj;
+}
+
+function divi(num1,num2) {
+    let resul = num1 / num2;
+    const msj = num1 + " : " + num2 + " = " + resul;
+    return msj;
+}
+
+// Funciones de Palabras
+
+function ingresarPalabra() {
+    let palabra = prompt("Ingrese una palabra").toLocaleString('es');
+    // Verificamos que no se ingresen números o campos vacíos
+    while (!isNaN(parseInt(palabra)) || palabra == "") {
+        console.log(parseInt(palabra));
+        palabra = prompt("Por favor, ingrese sólo palabras:");
+    }
+    palabras.push(palabra);
+    console.log(palabras);
+    let cant = palabra.length;
+    alert("Usted ingresó la palabra: "+palabra+"\nSu palabra tiene "+cant+" letras");
 }
