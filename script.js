@@ -4,16 +4,20 @@ function start() {
     console.log("Bienvenido a la Aplicación");
 
     // Se solicita confirmación por prompt para iniciar programa y se almacena opción en variable inicio, convirtiéndola a número
-    let inicio = parseInt(prompt("Por favor elija:\n1.Iniciar Calculadora\n2.Iniciar Analizador de Palabras\n3.Salir"));
-    
-    // Nos aseguramos que se ingrese una de las opciones válidas, de lo contrario se sale del programa
-    if (inicio == 1 || inicio == 2 || inicio == 3) {
-        console.log("Ingresando a la Aplicación...");
-    } else {
-        console.log("Por favor ingrese una de las alternativas");
-        return;
+    let inicio = 0;
+    while (inicio == 0) {
+        inicio = parseInt(prompt("Por favor elija:\n1.Iniciar Calculadora\n2.Iniciar Analizador de Palabras\n3.Salir"));
+        // Nos aseguramos que se ingrese una de las opciones válidas, de lo contrario se sale del programa
+        if (inicio == 1 || inicio == 2 || inicio == 3) {
+            console.log("Ingresando a la Aplicación...");
+        } else {
+            console.log("Por favor ingrese una alternativa válida");
+            inicio = 0;
+        }
     }
+    
 
+    let palabras = [];
     // Se inicia bucle que vuelve a ejecutar programa si la variable inicio existe
     while (inicio) {
         switch (inicio) {
@@ -47,20 +51,32 @@ function start() {
                     let resul = num1/num2;
                     alert(num1 + " : " + num2 + " = " + resul);
                 } else {
-                    alert("Por favor seleccione una de las opciones");
+                    alert("Por favor seleccione una opción válida");
                 }
                 // Volvemos a preguntar por qué sección de la aplicación usar
                 inicio = parseInt(prompt("Seguir? Seleccione:\n1.Calculadora\n2.Analizador de Palabras\n3.Salir"));
                 break;
             case 2:
                 // Programa de palabras
+                alert("Programa de Análisis de Palabras");
                 console.log("Programa de palabras");
-                alert("Programa en construcción...");
+                let palabra;
+                palabra = prompt("Ingrese una palabra").toLocaleString('es');
+                // Verificamos que no se ingresen números o campos vacíos
+                while (!isNaN(parseInt(palabra)) || palabra == "") {
+                    console.log(parseInt(palabra));
+                    palabra = prompt("Por favor, ingrese sólo palabras:");
+                }
+                palabras.push(palabra);
+                console.log(palabras);
+                let cant = palabra.length;
+                alert("Usted ingresó la palabra: "+palabra+"\nSu palabra tiene "+cant+" letras");
                 // Volvemos a preguntar por qué sección de la aplicación usar
                 inicio = parseInt(prompt("Seguir? Seleccione:\n1.Calculadora\n2.Analizador de Palabras\n3.Salir"));
                 break;
             case 3:
                 // Si la variable inicio es 3 se sale del programa, damos a inicio el valor false para salir del switch y del bucle.
+                console.log(inicio);
                 inicio = false;
                 break;
         }
